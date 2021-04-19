@@ -96,6 +96,22 @@ export interface RequestBodySchemaProperties {
   };
 }
 
+interface SchemaProperties {
+  [key: string]: {
+    type: string;
+    description?: string;
+    example?: any;
+    format?: string;
+    enum?: string[];
+  };
+}
+
+export interface Schema {
+  type: string;
+  properties: SchemaProperties;
+  required?: string[];
+}
+
 interface RequestBodyContent {
   [key: string]: {
     schema: {
