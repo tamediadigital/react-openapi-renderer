@@ -54,7 +54,7 @@ type Parameter = {
 
 export type Parameters = Parameter[];
 
-type Tag = {
+export type Tag = {
   description?: string;
   externalDocs?: {
     description: string;

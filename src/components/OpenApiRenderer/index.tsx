@@ -13,23 +13,12 @@ type OpenApiRendererProps = {
 export default function OpenApiRenderer({
   specification,
 }: OpenApiRendererProps) {
-  const {
-    components,
-    info,
-    openapi,
-    paths,
-    servers,
-    // tags
-  } = specification;
+  const { components, info, openapi, paths, servers, tags } = specification;
 
   return (
     <div>
       <Header info={info} servers={servers} openApiVersion={openapi} />
-      <Paths
-        paths={paths}
-        // tags={tags}
-        components={components}
-      />
+      <Paths paths={paths} tags={tags} components={components} />
       {/* <Components components={components} /> */}
     </div>
   );

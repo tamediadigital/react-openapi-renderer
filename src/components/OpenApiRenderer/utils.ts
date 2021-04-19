@@ -1,7 +1,4 @@
-import {
-  Paths,
-  // Tags
-} from "../../models/OpenApi";
+import { Paths, Tags, Tag } from "../../models/OpenApi";
 
 const unifyPaths = (paths: Paths) => {
   const pathsMapped = Object.entries(paths).map(([pathname, https]) => {
@@ -34,13 +31,9 @@ export const groupPathsByTags = (paths: Paths) => {
   }, {});
 };
 
-// TODO: Tags
-// export const getTagDescription = (tagName: string, tags: Tags): string => {
-//   if (tags) {
-//     return tags.find((t) => t.name === tagName).description!;
-//   } else {
-//     return "";
-//   }
-// };
-
-export const getTagDescription = () => "";
+export const getTag = (tagName: string, tags: Tags): Tag | undefined => {
+  if (tags) {
+    return tags.find((t) => t.name === tagName);
+  }
+  return undefined;
+};
