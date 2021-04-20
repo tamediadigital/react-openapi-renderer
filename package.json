@@ -1,6 +1,6 @@
 {
   "name": "@tx-dts/react-openapi-renderer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React OpenAPI component",
   "author": "tamediadigital",
   "license": "Apache-2.0",
