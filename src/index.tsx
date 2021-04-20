@@ -1,5 +1,4 @@
 import * as React from "react";
-import styles from "./styles.module.css";
 
 import OpenApiRenderer from "./components/OpenApiRenderer";
 
@@ -8,9 +7,5 @@ interface Props {
 }
 
 export default function ReactOpenApiRenderer({ specification }: Props) {
-  return (
-    <div className={styles.test}>
-      <OpenApiRenderer specification={specification} />
-    </div>
-  );
+  return <OpenApiRenderer specification={specification} />;
 }
