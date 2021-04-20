@@ -1,10 +1,16 @@
-import * as React from 'react'
-import styles from './styles.module.css'
+import * as React from "react";
+import styles from "./styles.module.css";
+
+import OpenApiRenderer from "./components/OpenApiRenderer";
 
 interface Props {
-  text: string
+  specification: any;
 }
 
-export const ExampleComponent = ({ text }: Props) => {
-  return <div className={styles.test}>Example Component: {text}</div>
+export default function ReactOpenApiRenderer({ specification }: Props) {
+  return (
+    <div className={styles.test}>
+      <OpenApiRenderer specification={specification} />
+    </div>
+  );
 }
