@@ -2,7 +2,7 @@ import React from "react";
 
 import Header from "./Header";
 import Paths from "./Paths";
-// import Components from "./Components";
+import Components from "./Components";
 
 import OpenApi from "models/OpenApi";
 
@@ -19,7 +19,7 @@ export default function OpenApiRenderer({
     <div>
       <Header info={info} servers={servers} openApiVersion={openapi} />
       <Paths paths={paths} tags={tags} components={components} />
-      {/* <Components components={components} /> */}
+      <Components components={components} />
     </div>
   );
 }
