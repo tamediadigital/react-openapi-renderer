@@ -2,19 +2,19 @@
 
 > React OpenAPI component
 
-[![NPM](https://img.shields.io/npm/v/react-openapi-renderer.svg)](https://www.npmjs.com/package/react-openapi-renderer)
+[![NPM](https://img.shields.io/npm/v/react-openapi-renderer.svg)](https://www.npmjs.com/package/@tx-dts/react-openapi-renderer)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 
 ```bash
-npm install --save react-openapi-renderer
+npm install --save @tx-dts/react-openapi-renderer
 ```
 
 or
 
 ```bash
-yarn add react-openapi-renderer
+yarn add @tx-dts/react-openapi-renderer
 ```
 
 ## Usage
@@ -22,8 +22,8 @@ yarn add react-openapi-renderer
 ```tsx
 import React, { Component } from "react";
 
-import ReactOpenApiRenderer from "react-openapi-renderer";
-import "react-openapi-renderer/dist/index.css";
+import ReactOpenApiRenderer from "@tx-dts/react-openapi-renderer";
+import "@tx-dts/react-openapi-renderer/dist/index.css";
 
 class Example extends Component {
   render() {
