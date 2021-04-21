@@ -96,7 +96,7 @@ export interface RequestBodySchemaProperties {
   };
 }
 
-interface SchemaProperties {
+export interface SchemaProperties {
   [key: string]: {
     type: string;
     description?: string;
@@ -110,6 +110,9 @@ export type Schema = {
   type: string;
   properties: SchemaProperties;
   required?: string[];
+  items: {
+    properties: SchemaProperties;
+  };
 };
 
 export type SecuritySchema = {
@@ -118,6 +121,7 @@ export type SecuritySchema = {
   name?: string;
   type?: string;
   flows?: any;
+  scheme?: string;
 };
 
 export type Flow = {
