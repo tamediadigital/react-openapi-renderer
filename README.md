@@ -2,7 +2,7 @@
 
 > React OpenAPI component
 
-[![NPM](https://img.shields.io/npm/v/react-openapi-renderer.svg)](https://www.npmjs.com/package/@tx-dts/react-openapi-renderer)
+[![NPM](https://img.shields.io/npm/v/@tx-dts/react-openapi-renderer.svg)](https://www.npmjs.com/package/@tx-dts/react-openapi-renderer)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
