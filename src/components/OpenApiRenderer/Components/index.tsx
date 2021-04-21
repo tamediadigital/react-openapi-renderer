@@ -3,6 +3,7 @@ import {
   Components as ComponentsModel,
   Schema,
   SecuritySchema,
+  SchemaProperties,
   Flow,
 } from "models/OpenApi";
 
@@ -28,35 +29,40 @@ export default function Components({ components }: ComponentsProps) {
           <Accordion
             items={Object.entries(components.schemas).map(
               ([name, schema]: [string, Schema]) => {
+                const properties: SchemaProperties =
+                  schema.properties || schema.items.properties;
+                const isArray: boolean = schema.items ? true : false;
+
                 return {
                   heading: <h6 className='mb-0'>{name}</h6>,
                   content: (
                     <div
                       className={`font-monospace d-block ${styles.property}`}
                     >
-                      {`{`}
-                      {Object.entries(schema.properties).map(
-                        ([propertyName, propertyInfo]) => {
-                          return (
-                            <div key={propertyName} className='ms-3'>
-                              <span className='fw-bold text-dark'>
-                                {propertyName}
-                              </span>
-                              <Required
-                                required={schema.required?.includes(
-                                  propertyName
-                                )}
-                                showTitle={false}
-                              />
-                              &nbsp;
-                              <span className='text-primary'>
-                                {propertyInfo.type}
-                              </span>
-                            </div>
-                          );
-                        }
-                      )}
-                      {`}`}
+                      {isArray ? `[{` : `{`}
+                      {properties &&
+                        Object.entries(properties).map(
+                          ([propertyName, propertyInfo]) => {
+                            return (
+                              <div key={propertyName} className='ms-3'>
+                                <span className='fw-bold text-dark'>
+                                  {propertyName}
+                                </span>
+                                <Required
+                                  required={schema.required?.includes(
+                                    propertyName
+                                  )}
+                                  showTitle={false}
+                                />
+                                &nbsp;
+                                <span className='text-primary'>
+                                  {propertyInfo.type}
+                                </span>
+                              </div>
+                            );
+                          }
+                        )}
+                      {isArray ? `}]` : `}`}
                     </div>
                   ),
                 };
@@ -82,6 +88,11 @@ export default function Components({ components }: ComponentsProps) {
                       {securitySchema.in && (
                         <small className='d-block'>
                           In: {securitySchema.in}
+                        </small>
+                      )}
+                      {securitySchema.scheme && (
+                        <small className='d-block'>
+                          Scheme: {securitySchema.scheme}
                         </small>
                       )}
                       {securitySchema.description && (
