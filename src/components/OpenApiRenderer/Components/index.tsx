@@ -30,7 +30,7 @@ export default function Components({ components }: ComponentsProps) {
             items={Object.entries(components.schemas).map(
               ([name, schema]: [string, Schema]) => {
                 const properties: SchemaProperties =
-                  schema.properties || schema.items.properties;
+                  schema.properties || schema.items?.properties;
                 const isArray: boolean = schema.items ? true : false;
 
                 return {
