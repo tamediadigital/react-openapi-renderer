@@ -27,49 +27,53 @@ export default function Content({ content, components }: ContentProps) {
         {isArray ? `[` : null}
         <div className={`${isArray ? "ms-2" : null}`}>{`{`}</div>
         <div className={`ms-${isArray ? "4" : "2"}`}>
-          {Object.entries(properties).map(([name, p]) => {
-            if (p.items) {
-              if (p.items.$ref) {
-                const component = getComponent(p.items.$ref);
+          {properties &&
+            Object.entries(properties).map(([name, p]) => {
+              if (p.items) {
+                if (p.items.$ref) {
+                  const component = getComponent(p.items.$ref);
+                  return (
+                    <div key={name}>
+                      "{name}":{" "}
+                      {renderProperties(
+                        component.properties,
+                        p.type === "array"
+                      )}
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div key={name}>
+                      "{name}":
+                      <span style={{ color: "#00da91" }}>
+                        &nbsp;
+                        {p.type === "array" ? `[` : null}
+                        {p.items.type}
+                        {p.type === "array" ? `]` : null}
+                      </span>
+                    </div>
+                  );
+                }
+              }
+              if (p.$ref) {
+                const component = getComponent(p.$ref);
                 return (
-                  <div>
-                    "{name}":{" "}
-                    {renderProperties(component.properties, p.type === "array")}
-                  </div>
-                );
-              } else {
-                return (
-                  <div>
-                    "{name}":
-                    <span style={{ color: "#00da91" }}>
-                      &nbsp;
-                      {p.type === "array" ? `[` : null}
-                      {p.items.type}
-                      {p.type === "array" ? `]` : null}
-                    </span>
+                  <div key={name}>
+                    "{name}":{renderProperties(component.properties)}
                   </div>
                 );
               }
-            }
-            if (p.$ref) {
-              const component = getComponent(p.$ref);
               return (
                 <div key={name}>
-                  "{name}":{renderProperties(component.properties)}
+                  <span>
+                    "{name}":&nbsp;
+                    <span style={{ color: "#00da91" }}>
+                      {p.example || p.format} ({p.type})
+                    </span>
+                  </span>
                 </div>
               );
-            }
-            return (
-              <div key={name}>
-                <span>
-                  "{name}":&nbsp;
-                  <span style={{ color: "#00da91" }}>
-                    {p.example || p.format} ({p.type})
-                  </span>
-                </span>
-              </div>
-            );
-          })}
+            })}
         </div>
         <div className={`${isArray ? "ms-2" : null}`}>{`}`}</div>
         {isArray ? `]` : null}
