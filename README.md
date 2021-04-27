@@ -63,6 +63,10 @@ Bootstrap JS Scripts - at the bottom of body tag
 ></script>
 ```
 
+## Contributing
+
+If you want to contribute, please feel free to do so by following our [contribution guideline](https://github.com/tamediadigital/react-openapi-renderer/blob/main/CONTRIBUTING.md).
+
 ## License
 
 Apache 2.0 © [tamediadigital](https://github.com/tamediadigital)
