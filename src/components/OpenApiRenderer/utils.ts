@@ -37,3 +37,25 @@ export const getTag = (tagName: string, tags: Tags): Tag | undefined => {
   }
   return undefined;
 };
+
+// TODO: Styling
+export const getPropertyValue = (p: any) => {
+  if (p.format === "date-time") {
+    return `"${new Date().toISOString()}"`;
+  }
+
+  if (p.type === "string") {
+    return `"${p.example || "string"}"`;
+  }
+  if (p.type === "integer" || p.type === "number") {
+    // return "0";
+    return `"${p.example || "0"}"`;
+  }
+  if (p.type === "boolean") {
+    return "true";
+  }
+  if (p.format) {
+    return p.format;
+  }
+  return `(${p.type})`;
+};

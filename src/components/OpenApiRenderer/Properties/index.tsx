@@ -5,6 +5,8 @@ import {
   RequestBodySchemaProperties,
 } from "models/OpenApi";
 
+import { getPropertyValue } from "../utils";
+
 type PropertiesProps = {
   properties: RequestBodySchemaProperties;
   isArray?: boolean;
@@ -65,10 +67,10 @@ export default function Properties({
               <div key={name}>
                 <span>
                   "{name}":&nbsp;
-                  <span style={{ color: "#00da91", border: "1px solid red" }}>
-                    {/* TODO: Format here in this way: 0 for int, "string" for strings */}
-                    {p.example || p.format} ({p.type})
+                  <span style={{ color: "#00da91" }}>
+                    {getPropertyValue(p)}
                   </span>
+                  ,
                 </span>
               </div>
             );
