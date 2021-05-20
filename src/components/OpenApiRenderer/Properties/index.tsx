@@ -24,6 +24,20 @@ export default function Properties({
     return component;
   };
 
+  const getProperties = (p: any) => {
+    if (p?.items?.$ref) {
+      const component = getComponent(p.items.$ref);
+      return component.properties;
+    }
+    if (p?.$ref) {
+      const component = getComponent(p.$ref);
+      return component.properties;
+    }
+    if (p?.items?.properties) {
+      return p.items.properties;
+    }
+  };
+
   return (
     <div>
       {isArray ? `[` : null}
@@ -31,40 +45,16 @@ export default function Properties({
       <div className={`ms-${isArray ? "4" : "2"}`}>
         {properties &&
           Object.entries(properties).map(([name, p]) => {
-            if (p.items) {
-              if (p.items.$ref) {
-                const component = getComponent(p.items.$ref);
-                return (
-                  <div key={name}>
-                    "{name}":{" "}
-                    <Properties
-                      properties={component.properties}
-                      isArray={p.type === "array"}
-                      components={components}
-                    />
-                  </div>
-                );
-              } else {
-                return (
-                  <div key={name}>
-                    "{name}":
-                    <span style={{ color: "#00da91" }}>
-                      &nbsp;
-                      {p.type === "array" ? `[` : null}
-                      {p.items.type}
-                      {p.type === "array" ? `]` : null}
-                    </span>
-                  </div>
-                );
-              }
-            }
-            if (p.$ref) {
-              const component = getComponent(p.$ref);
+            // if (p?.properties) {
+            //TODO:
+            //   console.log(name, ": ", p.properties);
+            // }
+            if (p.items || p.$ref) {
               return (
                 <div key={name}>
-                  "{name}":
+                  "{name}":{" "}
                   <Properties
-                    properties={component.properties}
+                    properties={getProperties(p)}
                     isArray={p.type === "array"}
                     components={components}
                   />
@@ -75,7 +65,8 @@ export default function Properties({
               <div key={name}>
                 <span>
                   "{name}":&nbsp;
-                  <span style={{ color: "#00da91" }}>
+                  <span style={{ color: "#00da91", border: "1px solid red" }}>
+                    {/* TODO: Format here in this way: 0 for int, "string" for strings */}
                     {p.example || p.format} ({p.type})
                   </span>
                 </span>
