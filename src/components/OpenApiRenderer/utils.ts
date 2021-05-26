@@ -48,7 +48,6 @@ export const getPropertyValue = (p: any) => {
     return `"${p.example || "string"}"`;
   }
   if (p.type === "integer" || p.type === "number") {
-    // return "0";
     return `"${p.example || "0"}"`;
   }
   if (p.type === "boolean") {

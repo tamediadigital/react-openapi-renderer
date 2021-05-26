@@ -3,6 +3,7 @@ import React from "react";
 import {
   Components as ComponentsModel,
   RequestBodySchemaProperties,
+  Properties as PropertiesModel,
 } from "models/OpenApi";
 
 import { getPropertyValue } from "../utils";
@@ -46,35 +47,35 @@ export default function Properties({
       <div className={`${isArray ? "ms-2" : null}`}>{`{`}</div>
       <div className={`ms-${isArray ? "4" : "2"}`}>
         {properties &&
-          Object.entries(properties).map(([name, p]) => {
-            // if (p?.properties) {
-            //TODO:
-            //   console.log(name, ": ", p.properties);
-            // }
-            if (p.items || p.$ref) {
+          Object.entries(properties).map(
+            ([name, p]: [string, PropertiesModel]) => {
+              console.log(p);
+              //TODO: Handle p.properties
+              if (p.items || p.$ref) {
+                return (
+                  <div key={name}>
+                    "{name}":{" "}
+                    <Properties
+                      properties={getProperties(p)}
+                      isArray={p.type === "array"}
+                      components={components}
+                    />
+                  </div>
+                );
+              }
               return (
                 <div key={name}>
-                  "{name}":{" "}
-                  <Properties
-                    properties={getProperties(p)}
-                    isArray={p.type === "array"}
-                    components={components}
-                  />
+                  <span>
+                    "{name}":&nbsp;
+                    <span style={{ color: "#00da91" }}>
+                      {getPropertyValue(p)}
+                    </span>
+                    ,
+                  </span>
                 </div>
               );
             }
-            return (
-              <div key={name}>
-                <span>
-                  "{name}":&nbsp;
-                  <span style={{ color: "#00da91" }}>
-                    {getPropertyValue(p)}
-                  </span>
-                  ,
-                </span>
-              </div>
-            );
-          })}
+          )}
       </div>
       <div className={`${isArray ? "ms-2" : null}`}>{`}`}</div>
       {isArray ? `]` : null}

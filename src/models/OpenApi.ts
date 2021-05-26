@@ -97,6 +97,17 @@ export interface RequestBodySchemaProperties {
   };
 }
 
+export type Properties = {
+  type: string;
+  properties?: any;
+  $ref?: string;
+  items?: {
+    type?: string;
+    $ref?: string;
+    properties?: any;
+  };
+};
+
 export interface SchemaProperties {
   [key: string]: {
     type: string;
