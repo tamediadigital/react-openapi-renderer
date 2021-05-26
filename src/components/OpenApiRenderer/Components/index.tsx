@@ -5,10 +5,11 @@ import {
   SecuritySchema,
   SchemaProperties,
   Flow,
+  Property,
 } from "models/OpenApi";
 
 import Accordion from "components/Accordion";
-import Required from "../Required";
+import Required from "components/OpenApiRenderer/Required";
 
 import styles from "./Components.module.css";
 
@@ -42,7 +43,10 @@ export default function Components({ components }: ComponentsProps) {
                       {isArray ? `[{` : `{`}
                       {properties &&
                         Object.entries(properties).map(
-                          ([propertyName, propertyInfo]) => {
+                          ([propertyName, propertyInfo]: [
+                            string,
+                            Property
+                          ]) => {
                             return (
                               <div key={propertyName} className='ms-3'>
                                 <span className='fw-bold text-dark'>
@@ -56,7 +60,12 @@ export default function Components({ components }: ComponentsProps) {
                                 />
                                 &nbsp;
                                 <span className='text-primary'>
-                                  {propertyInfo.type}
+                                  {propertyInfo.type === "array"
+                                    ? `[${
+                                        propertyInfo.items?.type ||
+                                        propertyInfo.items?.$ref
+                                      }]`
+                                    : propertyInfo.type}
                                 </span>
                               </div>
                             );

@@ -3,7 +3,7 @@ import React from "react";
 import {
   Components as ComponentsModel,
   RequestBodySchemaProperties,
-  Properties as PropertiesModel,
+  Property,
 } from "models/OpenApi";
 
 import { getPropertyValue } from "../utils";
@@ -27,7 +27,7 @@ export default function Properties({
     return component;
   };
 
-  const getProperties = (p: any) => {
+  const getProperties = (p: Property) => {
     if (p?.items?.$ref) {
       const component = getComponent(p.items.$ref);
       return component.properties;
@@ -47,34 +47,32 @@ export default function Properties({
       <div className={`${isArray ? "ms-2" : null}`}>{`{`}</div>
       <div className={`ms-${isArray ? "4" : "2"}`}>
         {properties &&
-          Object.entries(properties).map(
-            ([name, p]: [string, PropertiesModel]) => {
-              //TODO: Handle p.properties
-              if (p.items || p.$ref) {
-                return (
-                  <div key={name}>
-                    "{name}":{" "}
-                    <Properties
-                      properties={getProperties(p)}
-                      isArray={p.type === "array"}
-                      components={components}
-                    />
-                  </div>
-                );
-              }
+          Object.entries(properties).map(([name, p]: [string, Property]) => {
+            //TODO: Handle p.properties
+            if (p.items || p.$ref) {
               return (
                 <div key={name}>
-                  <span>
-                    "{name}":&nbsp;
-                    <span style={{ color: "#00da91" }}>
-                      {getPropertyValue(p)}
-                    </span>
-                    ,
-                  </span>
+                  "{name}":{" "}
+                  <Properties
+                    properties={getProperties(p)}
+                    isArray={p.type === "array"}
+                    components={components}
+                  />
                 </div>
               );
             }
-          )}
+            return (
+              <div key={name}>
+                <span>
+                  "{name}":&nbsp;
+                  <span style={{ color: "#00da91" }}>
+                    {getPropertyValue(p)}
+                  </span>
+                  ,
+                </span>
+              </div>
+            );
+          })}
       </div>
       <div className={`${isArray ? "ms-2" : null}`}>{`}`}</div>
       {isArray ? `]` : null}

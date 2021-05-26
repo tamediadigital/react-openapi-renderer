@@ -97,7 +97,7 @@ export interface RequestBodySchemaProperties {
   };
 }
 
-export type Properties = {
+export type Property = {
   type: string;
   properties?: any;
   $ref?: string;
