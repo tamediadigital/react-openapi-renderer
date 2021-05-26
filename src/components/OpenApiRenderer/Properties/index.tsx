@@ -49,7 +49,6 @@ export default function Properties({
         {properties &&
           Object.entries(properties).map(
             ([name, p]: [string, PropertiesModel]) => {
-              console.log(p);
               //TODO: Handle p.properties
               if (p.items || p.$ref) {
                 return (
