@@ -106,6 +106,8 @@ export type Property = {
     $ref?: string;
     properties?: any;
   };
+  example?: any;
+  format?: any;
 };
 
 export interface SchemaProperties {

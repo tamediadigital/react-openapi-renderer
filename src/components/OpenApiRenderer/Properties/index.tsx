@@ -65,10 +65,7 @@ export default function Properties({
               <div key={name}>
                 <span>
                   "{name}":&nbsp;
-                  <span style={{ color: "#00da91" }}>
-                    {getPropertyValue(p)}
-                  </span>
-                  ,
+                  <span>{getPropertyValue(p)}</span>,
                 </span>
               </div>
             );
