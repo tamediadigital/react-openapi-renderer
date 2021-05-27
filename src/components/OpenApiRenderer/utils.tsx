@@ -1,4 +1,5 @@
-import { Paths, Tags, Tag } from "../../models/OpenApi";
+import React from "react";
+import { Paths, Tags, Tag, Property } from "../../models/OpenApi";
 
 const unifyPaths = (paths: Paths) => {
   const pathsMapped = Object.entries(paths).map(([pathname, https]) => {
@@ -36,4 +37,24 @@ export const getTag = (tagName: string, tags: Tags): Tag | undefined => {
     return tags.find((t) => t.name === tagName);
   }
   return undefined;
+};
+
+export const getPropertyValue = (p: Property) => {
+  const stringStyle = { color: "#00da91" };
+  if (p.format === "date-time") {
+    return <span style={stringStyle}>"{new Date().toISOString()}"</span>;
+  }
+  if (p.type === "string") {
+    return <span style={stringStyle}>"{p.example || "string"}"</span>;
+  }
+  if (p.type === "integer" || p.type === "number") {
+    return <span className='text-danger'>{p.example || `0`}</span>;
+  }
+  if (p.type === "boolean") {
+    return <span className='text-warning'>true</span>;
+  }
+  if (p.format) {
+    return <span style={stringStyle}>{p.format}</span>;
+  }
+  return <span style={stringStyle}>{p.type}</span>;
 };

@@ -93,8 +93,22 @@ export interface RequestBodySchemaProperties {
     enum?: string[];
     $ref?: string;
     items: any;
+    properties: any;
   };
 }
+
+export type Property = {
+  type: string;
+  properties?: any;
+  $ref?: string;
+  items?: {
+    type?: string;
+    $ref?: string;
+    properties?: any;
+  };
+  example?: any;
+  format?: any;
+};
 
 export interface SchemaProperties {
   [key: string]: {
@@ -103,6 +117,11 @@ export interface SchemaProperties {
     example?: any;
     format?: string;
     enum?: string[];
+    items: {
+      type?: string;
+      $ref?: string;
+      properties?: any;
+    };
   };
 }
 
