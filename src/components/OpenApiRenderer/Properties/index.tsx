@@ -45,25 +45,6 @@ export default function Properties({
       return property.properties;
     }
   };
-  // TODO:
-  // const getType = (property: Property) => {
-  //   if (property?.items?.$ref) {
-  //     const component = getComponent(property.items.$ref);
-
-  //     return component.type;
-  //   }
-  //   if (property?.$ref) {
-  //     const component = getComponent(property.$ref);
-  //     return component.type;
-  //   }
-  //   if (property?.items?.properties) {
-  //     return "array";
-  //   }
-  //   if (property.properties) {
-  //     return "object";
-  //   }
-  //   return "object";
-  // };
 
   const renderSimpleProperty = (name: string, value: any, isLast: boolean) => {
     return (
@@ -97,7 +78,7 @@ export default function Properties({
   };
 
   return (
-    <div>
+    <span>
       {getBracket().start}
       <div className={`ms-${isArray ? "4" : "2"}`}>
         {properties &&
@@ -108,17 +89,14 @@ export default function Properties({
               const isLast = index === Object.keys(properties).length - 1;
               if (isCompositeProperty) {
                 const props = getProperties(property);
-                // TODO: Use getType() func
-                const type = property.type;
-                // const type = getType(property);
                 return (
                   <div key={name}>
-                    "{name}":
+                    "{name}":&nbsp;
                     <Properties
                       properties={props}
                       isArray={property.type === "array"}
                       components={components}
-                      type={type}
+                      type={property.type}
                     />
                     {!isLast && ","}
                   </div>
@@ -133,6 +111,6 @@ export default function Properties({
           )}
       </div>
       {getBracket().end}
-    </div>
+    </span>
   );
 }
