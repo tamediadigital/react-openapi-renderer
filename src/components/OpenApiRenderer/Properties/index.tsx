@@ -10,17 +10,17 @@ import { getPropertyValue } from "../utils";
 
 type PropertiesProps = {
   properties: RequestBodySchemaProperties;
-  isArray?: boolean;
   components: ComponentsModel;
   type: string;
 };
 
 export default function Properties({
   properties,
-  isArray = false,
   components,
   type,
 }: PropertiesProps) {
+  const isArray: boolean = type === "array";
+
   const getComponent = (refPath: string) => {
     const splitPath = refPath.split("/");
     const schemaType = splitPath[2];
@@ -94,7 +94,6 @@ export default function Properties({
                     "{name}":&nbsp;
                     <Properties
                       properties={props}
-                      isArray={property.type === "array"}
                       components={components}
                       type={property.type}
                     />

@@ -48,7 +48,6 @@ export default function Content({ content, components }: ContentProps) {
       return (
         <Properties
           properties={props}
-          isArray={component.type === "array"}
           type={component.type}
           components={components}
         />
@@ -61,7 +60,6 @@ export default function Content({ content, components }: ContentProps) {
       return (
         <Properties
           properties={component.properties}
-          isArray={schema.type === "array"}
           type={component.type}
           components={components}
         />
