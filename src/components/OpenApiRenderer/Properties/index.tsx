@@ -90,6 +90,10 @@ export default function Properties({
         end: "]",
       };
     }
+    return {
+      start: "",
+      end: "",
+    };
   };
 
   return (
