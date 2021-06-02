@@ -1,5 +1,5 @@
 import React from "react";
-import { Paths, Tags, Tag, Property } from "../../models/OpenApi";
+import { Paths, Tags, Tag, Property, Components } from "../../models/OpenApi";
 
 const unifyPaths = (paths: Paths) => {
   const pathsMapped = Object.entries(paths).map(([pathname, https]) => {
@@ -57,4 +57,12 @@ export const getPropertyValue = (p: Property) => {
     return <span style={stringStyle}>{p.format}</span>;
   }
   return <span style={stringStyle}>{p.type}</span>;
+};
+
+export const getComponent = (refPath: string, components: Components) => {
+  const splitPath = refPath.split("/");
+  const schemaType = splitPath[2];
+  const schemaObject = splitPath[3];
+  const component = components[schemaType][schemaObject];
+  return component;
 };

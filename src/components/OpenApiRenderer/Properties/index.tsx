@@ -6,7 +6,7 @@ import {
   Property,
 } from "models/OpenApi";
 
-import { getPropertyValue } from "../utils";
+import { getPropertyValue, getComponent } from "../utils";
 
 type PropertiesProps = {
   properties: RequestBodySchemaProperties;
@@ -21,21 +21,13 @@ export default function Properties({
 }: PropertiesProps) {
   const isArray: boolean = type === "array";
 
-  const getComponent = (refPath: string) => {
-    const splitPath = refPath.split("/");
-    const schemaType = splitPath[2];
-    const schemaObject = splitPath[3];
-    const component = components[schemaType][schemaObject];
-    return component;
-  };
-
   const getProperties = (property: Property) => {
     if (property?.items?.$ref) {
-      const component = getComponent(property.items.$ref);
+      const component = getComponent(property.items.$ref, components);
       return component.properties;
     }
     if (property?.$ref) {
-      const component = getComponent(property.$ref);
+      const component = getComponent(property.$ref, components);
       return component.properties;
     }
     if (property?.items?.properties) {
