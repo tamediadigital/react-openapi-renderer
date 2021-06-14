@@ -12,29 +12,41 @@ type PropertiesProps = {
   properties: RequestBodySchemaProperties;
   components: ComponentsModel;
   type: string;
+  subType?: string;
 };
 
 export default function Properties({
   properties,
   components,
   type,
+  subType = "",
 }: PropertiesProps) {
   const isArray: boolean = type === "array";
 
-  const getProperties = (property: Property) => {
+  const getProperties = (property: Property): any => {
     if (property?.items?.$ref) {
       const component = getComponent(property.items.$ref, components);
-      return component.properties;
+      return {
+        properties: component.properties,
+        subType: component.type,
+      };
     }
     if (property?.$ref) {
       const component = getComponent(property.$ref, components);
-      return component.properties;
+      return {
+        properties: component.properties,
+        subType: component.type,
+      };
     }
     if (property?.items?.properties) {
-      return property.items.properties;
+      return {
+        properties: property.items,
+      };
     }
     if (property.properties) {
-      return property.properties;
+      return {
+        properties: property.properties,
+      };
     }
   };
 
@@ -50,14 +62,14 @@ export default function Properties({
     );
   };
 
-  const getBracket = (): any => {
-    if (type === "object") {
+  const getBracket = (propertyType: string): { start: string; end: string } => {
+    if (propertyType === "object") {
       return {
         start: "{",
         end: "}",
       };
     }
-    if (type === "array") {
+    if (propertyType === "array") {
       return {
         start: "[",
         end: "]",
@@ -71,7 +83,8 @@ export default function Properties({
 
   return (
     <span>
-      {getBracket().start}
+      {getBracket(type).start}
+      {getBracket(subType).start}
       <div className={`ms-${isArray ? "4" : "2"}`}>
         {properties &&
           Object.entries(properties).map(
@@ -85,9 +98,10 @@ export default function Properties({
                   <div key={name}>
                     "{name}":&nbsp;
                     <Properties
-                      properties={props}
+                      properties={props?.properties}
                       components={components}
                       type={property.type}
+                      subType={props?.subType ? props.subType : ""}
                     />
                     {!isLast && ","}
                   </div>
@@ -101,7 +115,8 @@ export default function Properties({
             }
           )}
       </div>
-      {getBracket().end}
+      {getBracket(subType).end}
+      {getBracket(type).end}
     </span>
   );
 }

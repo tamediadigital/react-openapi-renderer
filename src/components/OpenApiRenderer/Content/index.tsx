@@ -10,7 +10,6 @@ type ContentProps = {
 
 import Properties from "components/OpenApiRenderer/Properties";
 
-// TODO: Cleanup & recursively render this
 export default function Content({ content, components }: ContentProps) {
   const schema = content?.[Object.keys(content)[0]]?.schema;
   if (!schema) {
@@ -38,12 +37,10 @@ export default function Content({ content, components }: ContentProps) {
     if (schema["$ref"]) {
       const component = getComponent(schema["$ref"], components);
       const props = getProperties(component);
+      const type = schema.type ? schema.type : component.type;
+
       return (
-        <Properties
-          properties={props}
-          type={component.type}
-          components={components}
-        />
+        <Properties properties={props} type={type} components={components} />
       );
     }
     // Case 2 - items (object / array)
@@ -53,7 +50,8 @@ export default function Content({ content, components }: ContentProps) {
       return (
         <Properties
           properties={component.properties}
-          type={component.type}
+          type={schema.type}
+          subType={component.type}
           components={components}
         />
       );
@@ -61,7 +59,7 @@ export default function Content({ content, components }: ContentProps) {
       return (
         <Properties
           properties={schema.properties}
-          type={schema.type}
+          type='object'
           components={components}
         />
       );
