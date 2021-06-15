@@ -6,73 +6,117 @@ import {
   Property,
 } from "models/OpenApi";
 
-import { getPropertyValue } from "../utils";
+import { getPropertyValue, getComponent } from "../utils";
 
 type PropertiesProps = {
   properties: RequestBodySchemaProperties;
-  isArray?: boolean;
   components: ComponentsModel;
+  type: string;
+  subType?: string;
 };
 
 export default function Properties({
   properties,
-  isArray = false,
   components,
+  type,
+  subType = "",
 }: PropertiesProps) {
-  const getComponent = (refPath: string) => {
-    const splitPath = refPath.split("/");
-    const schemaType = splitPath[2];
-    const schemaObject = splitPath[3];
-    const component = components[schemaType][schemaObject];
-    return component;
+  const isArray: boolean = type === "array";
+
+  const getProperties = (property: Property): any => {
+    if (property?.items?.$ref) {
+      const component = getComponent(property.items.$ref, components);
+      return {
+        properties: component.properties,
+        subType: component.type,
+      };
+    }
+    if (property?.$ref) {
+      const component = getComponent(property.$ref, components);
+      return {
+        properties: component.properties,
+        subType: component.type,
+      };
+    }
+    if (property?.items?.properties) {
+      return {
+        properties: property.items,
+      };
+    }
+    if (property.properties) {
+      return {
+        properties: property.properties,
+      };
+    }
   };
 
-  const getProperties = (p: Property) => {
-    if (p?.items?.$ref) {
-      const component = getComponent(p.items.$ref);
-      return component.properties;
+  const renderSimpleProperty = (name: string, value: any, isLast: boolean) => {
+    return (
+      <div key={name}>
+        <span>
+          "{name}":&nbsp;
+          <span>{value}</span>
+          {!isLast && ","}
+        </span>
+      </div>
+    );
+  };
+
+  const getBracket = (propertyType: string): { start: string; end: string } => {
+    if (propertyType === "object") {
+      return {
+        start: "{",
+        end: "}",
+      };
     }
-    if (p?.$ref) {
-      const component = getComponent(p.$ref);
-      return component.properties;
+    if (propertyType === "array") {
+      return {
+        start: "[",
+        end: "]",
+      };
     }
-    if (p?.items?.properties) {
-      return p.items.properties;
-    }
+    return {
+      start: "",
+      end: "",
+    };
   };
 
   return (
-    <div>
-      {isArray ? `[` : null}
-      <div className={`${isArray ? "ms-2" : null}`}>{`{`}</div>
+    <span>
+      {getBracket(type).start}
+      {getBracket(subType).start}
       <div className={`ms-${isArray ? "4" : "2"}`}>
         {properties &&
-          Object.entries(properties).map(([name, p]: [string, Property]) => {
-            //TODO: Handle p.properties
-            if (p.items || p.$ref) {
-              return (
-                <div key={name}>
-                  "{name}":{" "}
-                  <Properties
-                    properties={getProperties(p)}
-                    isArray={p.type === "array"}
-                    components={components}
-                  />
-                </div>
+          Object.entries(properties).map(
+            ([name, property]: [string, Property], index) => {
+              const isCompositeProperty: boolean =
+                property.items || property.$ref || property.properties;
+              const isLast = index === Object.keys(properties).length - 1;
+              if (isCompositeProperty) {
+                const props = getProperties(property);
+                return (
+                  <div key={name}>
+                    "{name}":&nbsp;
+                    <Properties
+                      properties={props?.properties}
+                      components={components}
+                      type={property.type}
+                      subType={props?.subType ? props.subType : ""}
+                    />
+                    {!isLast && ","}
+                  </div>
+                );
+              }
+              return renderSimpleProperty(
+                name,
+                getPropertyValue(property),
+                isLast
               );
             }
-            return (
-              <div key={name}>
-                <span>
-                  "{name}":&nbsp;
-                  <span>{getPropertyValue(p)}</span>,
-                </span>
-              </div>
-            );
-          })}
+          )}
       </div>
-      <div className={`${isArray ? "ms-2" : null}`}>{`}`}</div>
-      {isArray ? `]` : null}
-    </div>
+      {getBracket(subType).end}
+      {getBracket(type).end}
+    </span>
   );
 }

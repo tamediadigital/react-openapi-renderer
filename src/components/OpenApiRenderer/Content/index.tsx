@@ -1,5 +1,6 @@
 import React from "react";
 
+import { getComponent } from "../utils";
 import { Components as ComponentsModel, ResponseContent } from "models/OpenApi";
 
 type ContentProps = {
@@ -9,20 +10,11 @@ type ContentProps = {
 
 import Properties from "components/OpenApiRenderer/Properties";
 
-// TODO: Cleanup & recursively render this
 export default function Content({ content, components }: ContentProps) {
   const schema = content?.[Object.keys(content)[0]]?.schema;
   if (!schema) {
     return null;
   }
-
-  const getComponent = (refPath: string) => {
-    const splitPath = refPath.split("/");
-    const schemaType = splitPath[2];
-    const schemaObject = splitPath[3];
-    const component = components[schemaType][schemaObject];
-    return component;
-  };
 
   const getProperties = (schema: {
     type: string;
@@ -34,7 +26,7 @@ export default function Content({ content, components }: ContentProps) {
     }
     if (schema.items) {
       const properties = schema.items["$ref"]
-        ? getComponent(schema.items["$ref"])
+        ? getComponent(schema.items["$ref"], components)
         : schema.items.properties;
       return properties;
     }
@@ -43,30 +35,33 @@ export default function Content({ content, components }: ContentProps) {
   const renderCardContent = () => {
     // Case 1 - $ref
     if (schema["$ref"]) {
-      const component = getComponent(schema["$ref"]);
+      const component = getComponent(schema["$ref"], components);
       const props = getProperties(component);
+      const type = schema.type ? schema.type : component.type;
+
       return (
-        <Properties
-          properties={props}
-          isArray={component.type === "array"}
-          components={components}
-        />
+        <Properties properties={props} type={type} components={components} />
       );
     }
     // Case 2 - items (object / array)
     // TODO: items not ref, but { type:  string }
     else if (schema.items && schema.items["$ref"]) {
-      const component = getComponent(schema.items["$ref"]);
+      const component = getComponent(schema.items["$ref"], components);
       return (
         <Properties
           properties={component.properties}
-          isArray={schema.type === "array"}
+          type={schema.type}
+          subType={component.type}
           components={components}
         />
       );
     } else if (schema.properties && !schema.items) {
       return (
-        <Properties properties={schema.properties} components={components} />
+        <Properties
+          properties={schema.properties}
+          type='object'
+          components={components}
+        />
       );
     }
     return <p>{schema.type}</p>;
