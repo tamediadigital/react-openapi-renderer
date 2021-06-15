@@ -38,9 +38,15 @@ export default function Content({ content, components }: ContentProps) {
       const component = getComponent(schema["$ref"], components);
       const props = getProperties(component);
       const type = schema.type ? schema.type : component.type;
+      const subType = component?.items?.type;
 
       return (
-        <Properties properties={props} type={type} components={components} />
+        <Properties
+          properties={props}
+          type={type}
+          subType={subType}
+          components={components}
+        />
       );
     }
     // Case 2 - items (object / array)
