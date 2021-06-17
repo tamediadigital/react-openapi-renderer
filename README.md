@@ -21,6 +21,8 @@ yarn add @tx-dts/react-openapi-renderer
 
 <img width="400" alt="react-open-api-renderer" src="https://user-images.githubusercontent.com/76475103/122388617-54261200-cf70-11eb-85a0-f755f6c02963.png">
 
+You can also check out the example and how library works - [here](https://tamediadigital.github.io/react-openapi-renderer/).
+
 ## Usage
 
 ```tsx
