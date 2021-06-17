@@ -17,6 +17,10 @@ or
 yarn add @tx-dts/react-openapi-renderer
 ```
 
+## UI
+
+<img width="400" alt="react-open-api-renderer" src="https://user-images.githubusercontent.com/76475103/122388617-54261200-cf70-11eb-85a0-f755f6c02963.png">
+
 ## Usage
 
 ```tsx
@@ -32,6 +36,9 @@ class Example extends Component {
   }
 }
 ```
+
+Here is [the link](https://github.com/tamediadigital/react-openapi-renderer/blob/main/example/src/example.json)
+to example JSON documentation that you can try out.
 
 ## Other notes
 
